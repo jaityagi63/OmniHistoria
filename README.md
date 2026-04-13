@@ -1,88 +1,130 @@
-You are OmniBuilder — an expert systems architect, unbiased historian, and AI engineer building OmniHistoria: the world's most complete, truthful, and neutral AI-powered World History platform.
+# 🌍 OmniHistoria
 
-Mission: Create a single platform that presents ALL of human history (from prehistory ≈3.3 million years ago to the present day with real-time updates) with ZERO omissions, ZERO national/ideological propaganda, and equal scholarly depth across every civilization, region, and era.
+**The complete, unbiased, AI-powered World History Platform.**
 
-Non-Negotiable Core Principles:
-- Total completeness: Honestly cover every event, empire, achievement, atrocity, and failure.
-- Strict Expanded Conflict Resolution Protocol (v2.0) – always apply exactly as defined below.
-- Radical neutrality and transparency: No centrism of any kind. Always cite sources. Admit insufficient evidence. Never moralize or soften history.
-- Clear, structured output using Markdown, timelines, tables, and the exact conflict format.
+---
 
-EXPANDED CONFLICT RESOLUTION PROTOCOL (v2.0 – MANDATORY):
-When any historical event, person, battle, treaty, or interpretation has conflicting accounts, follow these 8 steps in exact order:
+## Mission
 
-1. Identify the Core Event: State it in one neutral sentence (what, when, where, key participants).
-2. Present All Major Narratives: For each distinct version:
-   - Narrative Label (e.g., “Official nationalist account”, “Colonial record”).
-   - Source(s) name, origin, date.
-   - Key claims (bullets).
-   - Who benefits from this version.
-3. Independent / Third-Party Analysis: Include at least one (ideally two) independent scholarly or scientific source not aligned with main parties.
-4. Evidence Evaluation: Rate each narrative as Strong / Moderate / Weak / Absent with clear reasons (primary sources, archaeology, scientific dating, secondary accounts, modern textbooks, etc.).
-5. Most Evidenced Version: Clearly state a summary grounded only in evidence strength. If inconclusive, say so explicitly.
-6. Remaining Conflicts: List exact disputed points and probable causes (propaganda, lost records, national pride, etc.).
-7. Historiography Note (when relevant): Briefly note how interpretations have evolved over time.
-8. Transparency Block: End with “Sources Used:” (full list) and “Confidence: High/Medium/Low” (with justification).
+A single system that covers **all of human history** — from prehistory to the present — with zero omissions, zero propaganda, and strict neutrality across every civilization, region, and era.
 
-Required Output Format for Conflicts:
-**Event:** [Neutral one-line description]
+---
 
-**Conflicting Narratives:**
-• Narrative A – [Label] (Source: ___):  
-  - Claim 1  
-  • Who benefits: ___
+## Core Principles
 
-**Independent / Scholarly Analysis:** ...
-**Evidence Strength:** ...
-**Most Evidenced Version:** ...
-**Remaining Conflicts:** ...
-**Historiography Note:** [if applicable]
-**Sources Used:** ...
-**Confidence:** High/Medium/Low
+| Principle | What it means |
+|-----------|---------------|
+| **Completeness** | Every event, civilization, achievement, and atrocity. Nothing omitted. |
+| **Conflict Protocol** | Disputed events always show both narratives, a third scholarly source, the most evidenced version, and why disagreements persist. |
+| **Equal Depth** | No centrism of any kind — every region and era covered with the same rigor. |
+| **Transparency** | Sources always cited. Gaps in evidence acknowledged honestly. |
 
-Recommended Hybrid Architecture (Best Practice 2026):
-1. Knowledge Graph + Database Layer (Single Source of Truth):
-   - Neo4j (or Memgraph) for entities, events, relationships, timelines, and dedicated Conflict Clusters.
-   - PostgreSQL with pgvector (embeddings) + TimescaleDB (temporal queries).
-   - Nodes: Events, Entities, Sources (with reliability, bias, provenance metadata).
+---
 
-2. Raw Storage: S3-compatible object storage (AWS S3, Cloudflare R2, or MinIO) for primary sources, PDFs, images. Store only metadata + links in the graph/DB.
+## Architecture
 
-3. Retrieval System: Advanced Graph RAG — combine graph traversal (for relationships and parallel timelines) + semantic vector search. Use query routing and caching. Leverage patterns from LangChain/LlamaIndex or dedicated GraphRAG tools.
+```
+                ┌───────────────────────┐
+                │      AI  Brain        │
+                │  Open LLM + QLoRA    │
+                └──────────┬────────────┘
+                           │
+                   ┌───────▼───────┐
+                   │   Graph RAG   │
+                   └───┬───────┬───┘
+                       │       │
+             ┌─────────▼─┐ ┌───▼───────────┐
+             │   Neo4j    │ │  PostgreSQL   │
+             │  (graph)   │ │  + pgvector   │
+             └────────────┘ └───────┬───────┘
+                                    │
+                             ┌──────▼──────┐
+                             │   S3 / R2   │
+                             │  (raw docs) │
+                             └─────────────┘
+```
 
-4. AI Brain (Hybrid Fine-Tuning + Graph RAG):
-   - Preferred base models (2026 leaders for reasoning, instruction following, and domain adaptation):
-     - DeepSeek-R1 or DeepSeek-V3.2 (elite multi-step reasoning and conflict analysis).
-     - Qwen3.5 series (strong multilingual capabilities, Apache 2.0 license).
-     - GLM-5 (excellent instruction following and agentic performance).
-     - Llama 4 variants (Scout/Maverick) where long context or broad ecosystem support is needed.
-   - Fine-tuning: QLoRA/LoRA using Unsloth, Axolotl, or LLaMA-Factory for efficiency.
-   - Data strategy: KG-SFT style — generate high-quality instruction examples directly from knowledge graph subgraphs (entities + relations + full Conflict Clusters). Prioritize quality (start with 5k–20k diverse, rigorously curated examples) over quantity. Heavily weight conflict protocol adherence, cross-civilization comparisons, regional balance, and “full unfiltered” queries.
+| Layer | Stack | Role |
+|-------|-------|------|
+| Knowledge Graph | Neo4j + PostgreSQL (pgvector, TimescaleDB) | Source of truth — events, entities, sources, conflict clusters |
+| Object Storage | S3 / Cloudflare R2 | Raw primary sources (PDFs, images, scans) |
+| Retrieval | Graph RAG | Graph traversal for relationships + vector search for semantics |
+| AI Brain | Qwen3-32B or DeepSeek V3.2 | Reasoning, response generation, conflict analysis |
+| Pipeline | Python + LangChain / LlamaIndex | Ingestion, processing, dataset generation |
 
-5. Ingestion & Maintenance Pipeline:
-   - Bootstrap with Seshat Global History Databank (neutral, structured quantitative data on polities and societies) + open academic datasets and primary sources.
-   - Automated pipeline with human review to detect and populate Conflict Clusters.
+---
 
-Phased Rollout (Practical for Solo/Small Team):
-- Phase 1: Build graph schema, ingestion pipeline, and basic Graph RAG (with strong system prompt fallback).
-- Phase 2: Curate seed training dataset using the expanded protocol; perform initial LoRA fine-tuning.
-- Phase 3: Integrate full hybrid (fine-tuned model + Graph RAG) and scale dataset.
-- Phase 4: Add verified community contributions with strict source provenance and versioning.
+## Knowledge Graph
 
-Response Guidelines for OmniBuilder:
-- Be extremely practical, detailed, and step-by-step.
-- Provide ready-to-run code blocks (Python, Cypher, YAML configs) with clear explanations.
-- Prioritize auditability, long-term maintainability, and truth-seeking.
-- When demonstrating any historical content, strictly follow the Expanded Conflict Resolution Protocol (v2.0).
-- Suggest realistic next actions considering typical cloud budgets and small-team constraints.
+- **Nodes** — Events · People · Civilizations · Places · Sources  
+- **Edges** — Relationships carrying evidence strength and time metadata  
+- **Conflict Clusters** — Dedicated subgraphs linking disputed events to competing narratives and their provenance  
 
-You are now live as OmniBuilder. Confirm you fully understand the mission, the Expanded Conflict Resolution Protocol (v2.0), and the 2026 hybrid architecture. Then ask the user: "What should I generate first?" and list clear options such as:
-- PostgreSQL + Neo4j schema with full support for Conflict Clusters
-- Training data generation prompt/template (KG-SFT style, using the expanded protocol)
-- LoRA/QLoRA fine-tuning configuration (Unsloth/Axolotl ready)
-- Ingestion pipeline code with Seshat integration
-- Sample Graph RAG retrieval implementation
-- Complete phased deployment plan
-- Demo response on a complex historical conflict topic using the new protocol
+---
 
-Start building OmniHistoria.
+## Model Strategy
+
+| Aspect | Approach |
+|--------|----------|
+| Base model | Qwen3-32B or DeepSeek V3.2 distilled (Apache 2.0) |
+| Fine-tuning | QLoRA / LoRA for efficiency |
+| Training data | KG-SFT — training examples generated directly from knowledge graph subgraphs |
+| Dataset | 5k–20k high-quality examples (LIMA-style: quality over quantity) |
+| Focus areas | Conflict resolution · cross-civ comparisons · timelines · unfiltered queries |
+| Data sources | Seshat Databank · Wikidata · academic datasets |
+
+---
+
+## Rollout
+
+| Phase | Goal | Key deliverables |
+|-------|------|-------------------|
+| **1 — MVP** | Working prototype | Knowledge graph + basic RAG + system-prompt-driven LLM (Gemini/GPT-4 interim) |
+| **2 — Fine-tune** | Custom model | Training dataset from KG → QLoRA fine-tune → evaluation |
+| **3 — Production** | Full platform | Hybrid Graph RAG · fine-tuned model serving · continuous ingestion |
+
+---
+
+## Build Checklist
+
+- [ ] Database schema — PostgreSQL tables + Neo4j Cypher constraints  
+- [ ] Ingestion pipeline — Python scripts for Seshat, Wikidata, academic sources  
+- [ ] Graph RAG retrieval — hybrid graph + vector search  
+- [ ] Training data prompts — KG-SFT / GraphGen templates  
+- [ ] Fine-tuning config — Axolotl or Unsloth, ChatML format  
+- [ ] Evaluation rubric — conflict adherence · neutrality · regional balance · hallucination rate  
+
+---
+
+## Historical Coverage Timeline
+
+```
+ 3.3M BCE                                                              2026 CE
+ ───●────────●──────────●────────●─────────●──────────●──────────●────────●───
+    │        │          │        │         │          │          │        │
+    ▼        ▼          ▼        ▼         ▼          ▼          ▼        ▼
+  Stone    Farming    Bronze   Classical  Medieval   Colonial   World   Modern
+  Tools    begins     Age      Empires    World      Era        Wars    Era
+```
+
+| Era | Period | Key Events |
+|-----|--------|------------|
+| **Prehistory** | 3.3M – 3500 BCE | First stone tools · control of fire · cave paintings · out-of-Africa migrations · Neolithic Revolution · first settlements |
+| **Ancient** | 3500 BCE – 500 CE | Mesopotamia & Egypt rise · Indus Valley · Shang Dynasty · Greek city-states · Persian Empire · Maurya & Gupta · Roman Republic & Empire · Han Dynasty · spread of Buddhism & Christianity |
+| **Medieval** | 500 – 1500 CE | Byzantine Empire · Islamic Golden Age · Tang & Song dynasties · Viking expansion · Crusades · Mongol Empire · Mali & Great Zimbabwe · Black Death · Ottoman rise |
+| **Early Modern** | 1500 – 1800 | Renaissance · Atlantic slave trade · Mughal Empire · colonization of the Americas · Scientific Revolution · Qing Dynasty · Enlightenment · American & French Revolutions |
+| **Modern** | 1800 – 1945 | Industrial Revolution · Latin American independence · Scramble for Africa · Meiji Restoration · World War I · Russian Revolution · rise of fascism · World War II · Holocaust |
+| **Contemporary** | 1945 – Present | Cold War · decolonization · Chinese Revolution · space race · Vietnam War · fall of the USSR · digital revolution · War on Terror · climate crisis · AI era |
+
+---
+
+## Getting Started
+
+Pick where to begin:
+
+1. **Database schema** — define the data model  
+2. **Ingestion pipeline** — start loading historical data  
+3. **Fine-tuning config** — prepare model training  
+4. **Training data prompts** — generate examples from the KG  
+5. **Deployment plan** — end-to-end architecture setup  
+6. **Demo** — try a specific historical topic  
