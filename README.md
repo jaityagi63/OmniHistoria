@@ -128,3 +128,21 @@ Pick where to begin:
 4. **Training data prompts** — generate examples from the KG  
 5. **Deployment plan** — end-to-end architecture setup  
 6. **Demo** — try a specific historical topic  
+
+## Local MVP Scaffold (Implemented)
+
+This repository now includes a lightweight Python implementation to start Phase 1:
+
+- `src/omnihistoria/schema.py` — typed entities for events, sources, and evidence edges.
+- `src/omnihistoria/graph.py` — in-memory graph store with period/dispute retrieval and snapshot export.
+- `src/omnihistoria/prompts.py` — KG-SFT prompt builders for conflict and timeline examples.
+- `src/omnihistoria/cli.py` — command-line entry point with seeded demo data.
+- `tests/test_graph.py` — baseline unit tests for graph behavior and prompt validation.
+
+### Run
+
+```bash
+PYTHONPATH=src python -m unittest discover -s tests
+PYTHONPATH=src python -m omnihistoria.cli snapshot
+PYTHONPATH=src python -m omnihistoria.cli conflicts
+```
